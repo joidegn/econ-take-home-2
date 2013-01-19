@@ -1,5 +1,5 @@
 cls;
-library maxlik, pgraph;
+library maxlik;
 rndseed 1;
 
 n = 200;
