@@ -24,5 +24,28 @@
 
 
 \section{Problem}
+\subsection{}
+Heteroskedasticity means that the dependent variable of each observation has a potentially different variance depending on the independent variable. I.e. the conditional variance $V(Y|X)$ differs. If we use the model $Y_i = \beta X_i + \epsilon_i$ the variance of $\epsilon_i$ carries an index $i$ to denote that it differs among observations. One simple example where this might occur is if $X$ denotes gender (where $Y$ can denote e.g. income) and we observe that the variance among the income of the male observations is different to the variance of the female observations.
+
+This is an issue because the estimates for the variance of the parameters and thus the estimates for the standard errors might be too small compared to robust estimates. As a result hypothesis tests might yield wrong results.
+\subsection{}
+$Y_i - \beta X_i$ is a moment function that corresponds to $\tilde{\beta}$. $Y_i - \beta X_i$ is a moment function because $E(Y_i - \beta X_i) = 0$. Let $W_n = \exp(-X_i)$. Since $exp(a) > 0 \ \forall a$ it follows that $W_n$ is positive definite. If we plug $X_i$ and $Y_i$ together into the vector $Z_i$, with $\psi(Z_i, \beta) = \epsilon_i$ we have TODO: Check dimension of moment funktion (n?).
+\\
+It follows by the generalized method of moments that the GMM-estimator $\tilde{\beta}$ is given by 
+$$\tilde{\beta} = \displaystyle \arg \min_{\theta \in \Theta} [\frac{1}{n} \displaystyle \sum_{i=1}^n \psi(Z_i, \beta)]'W_n[\frac{1}{n} \displaystyle \sum_{i=1}^n \psi(Z_i, \beta)] = \arg \min \frac{1}{n} \displaystyle \sum_{i=1}^n \epsilon_i^2\exp(-X_i)$$ \\$$= \arg \min \frac{1}{n} \displaystyle \sum_{i=1}^n (Y_i-\beta X_i)^2\exp(-X_i)$$
+
+$$\frac{\partial (...)}{\partial \beta} = -\frac{1}{n} \displaystyle \sum_{i=1}^n X_i(Y_i-\tilde{\beta} X_i)\exp(-X_i)\stackrel{!}{=}0$$ \\
+$$\displaystyle \sum_{i=1}^nX_iY_i\exp(-X_i) = \tilde{\beta} \displaystyle \sum_{i=1}^nX_i^2\exp(-X_i)$$ \\
+$$\Leftrightarrow \tilde{\beta} = \frac{\displaystyle \sum_{i=1}^n X_iY_i\exp(-X_i)}{\displaystyle \sum_{i=1}^nX_i\exp(-X_i)}$$
+
+\subsection{}
+From proposition 5.2.1 from the lecture notes it follows that $\sqrt{n}(\tilde{\beta}_n-\beta) \sim N(0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1})V_0 E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$
+and $\tilde{\beta} \sim N(\beta_0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1}\frac{V_0}{n} E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$. In our case we have $V_0 = \exp(X_i)$ and $\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'} = -X_i$. Thus:
+$V(\tilde{\beta}) = E(X_i)^{-2}\frac{\exp(X_i)}{n}$ TODO: if I go on, I dont arrive at the right result...
+
+\subsection{}
+Both estimators are consistent which can be seen either by taking the plim or since the asymptotic distribution of $\tilde{\beta}$ has expectation of 0. The precision of an estimator is inverse to the variance and the variance of the sandich estimator is generally higher than that of the 
+
+
 
 \end{document}
