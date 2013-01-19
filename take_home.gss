@@ -18,7 +18,7 @@ for r(1, big_r, 1);
 	
 	@ generate data @
 	X = rndu(n, 1)*5;
-	epsilon = rndn(n,1).*exp(X);
+	epsilon = rndn(n,1).*sqrt(exp(X));
 	Y = beta*X + epsilon;
 	
 	{beta_hat[r], null, var_hat_beta_hat_white[r]} = ols2(Y, X);
