@@ -24,27 +24,30 @@
 
 
 \section{Problem}
-randomseed 1;
+Random Seed for the whole problem: "rndseed 1;"
 
 \subsection{}
 Heteroskedasticity means that the dependent variable of each observation has a potentially different variance depending on the independent variable. I.e. the conditional variance $V(Y|X)$ differs. If we use the model $Y_i = \beta X_i + \varepsilon_i$ the variance of $\varepsilon_i$ carries an index $i$ to denote that it differs among observations. One simple example where this might occur is if $X$ denotes gender (where $Y$ can denote e.g. income) and we observe that the variance among the income of the male observations is different to the variance of the female observations.
 
 This is an issue because the estimates for the variance of the parameters and thus the estimates for the standard errors might be too small compared to robust estimates. As a result hypothesis tests might yield wrong results.
-\subsection{}
-$\psi(Z_i, \theta) = X_i(Y_i - X_i'\theta)$ \\
-\\
-$X_i(Y_i - \beta X_i)$ is the moment function that corresponds to $\tilde{\beta}$. $X_i(Y_i - \beta X_i)$ is a moment function because $E(X_i(Y_i - \beta X_i)) = E(X_i\varepsilon_i) = E(\underset{x}{E}(X_i\varepsilon_i|X_i)) = E(X_i\underset{x}{E}(\varepsilon_i|X_i)) = 0$. Let $W_n = \exp(-X_i)$. Since $\exp(a) > 0 \ \forall a$ it follows that $W_n$ is positive definite. If we plug $X_i$ and $Y_i$ together into the vector $Z_i$, with $\psi(Z_i, \beta) = X_i\varepsilon_i$ we have \{\{TODO: Check dimension of moment funktion.\}\}
-\\
-It follows by the generalized method of moments that the GMM-estimator $\tilde{\beta}$ is given by \{\{TODO: this is still from the other momemt function where $\psi = \varepsilon$ and its also wrong \}\}
-$$\tilde{\beta} = \displaystyle \arg \min_{\theta \in \Theta} [\frac{1}{n} \displaystyle \sum_{i=1}^n \psi(Z_i, \beta)]'W_n[\frac{1}{n} \displaystyle \sum_{i=1}^n \psi(Z_i, \beta)] = \arg \min \frac{1}{n} \displaystyle \sum_{i=1}^n \varepsilon_i^2\exp(-X_i)$$ \\$$= \arg \min \frac{1}{n} \displaystyle \sum_{i=1}^n (Y_i-\beta X_i)^2\exp(-X_i)$$
 
-$$\frac{\partial (...)}{\partial \beta} = -\frac{1}{n} \displaystyle \sum_{i=1}^n X_i(Y_i-\tilde{\beta} X_i)\exp(-X_i)\stackrel{!}{=}0$$ \\
-$$\displaystyle \sum_{i=1}^nX_iY_i\exp(-X_i) = \tilde{\beta} \displaystyle \sum_{i=1}^nX_i^2\exp(-X_i)$$ \\
-$$\Leftrightarrow \tilde{\beta} = \frac{\displaystyle \sum_{i=1}^n X_iY_i\exp(-X_i)}{\displaystyle \sum_{i=1}^nX_i\exp(-X_i)}$$
+\subsection{}
+Let $A(X_i) = X_i\exp(-X_i)$ be the matrix of instruments and let $\rho(Z_i, \beta) = \varepsilon_i = (Y_i - X\beta)$. $\rho(Z_i, \beta)$ is a well defined conditional moment function for $\tilde{\beta}$ since $E(\rho(Z_i, \beta)| X_i) = E(\varepsilon_i | X_i) = 0$. Then $\psi(Z_i, \beta) = A(X_i)'\rho(z_i, \beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$
+\\
+$\psi(Z_i, \beta) = \exp(-X_i)X_i(Y_i - \beta X_i)$ is the moment function that corresponds to $\tilde{\beta}$. $\psi(Z_i, \beta)$ is a well defined moment function because $E(\psi(Z_i, \beta)) = E(\exp(-X_i)X_i\varepsilon_i) = E(\underset{x}{E}(\exp(-X_i)X_i\varepsilon_i|X_i)) = E(\exp(-X_i)X_i\underset{x}{E}(\varepsilon_i|X_i)) = 0$. \\
+
+Since we have $q=1$ moment function and $k=1$ parameter, we can simply replace the population moments with the sample moments in order to get a method of moments estimator: \\
+$$E(\psi(Z_i, \beta)) = 0$$
+$$E(\exp(-X_i)X_i(Y_i -X_i\beta)) = 0$$
+$$\frac{1}{n}\displaystyle \sum_{i=1}^n(\exp(-X_i)X_i(Y_i -X_i\tilde{\beta})) = 0$$
+$$\displaystyle \sum_{i=1}^n(\exp(-X_i)X_iY_i) = \displaystyle \sum_{i=1}^n(\exp(-X_i)X_i^2\tilde{\beta})$$
+$$\tilde{\beta} = \frac{\sum_{i=1}^n(\exp(-X_i)X_iY_i)}{\sum_{i=1}^n(\exp(-X_i)X_i^2
+)}$$
+
 
 \subsection{}
 From proposition 5.2.1 from the lecture notes it follows that $\sqrt{n}(\tilde{\beta}_n-\beta) \sim N(0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1})V_0 E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$
-and $\tilde{\beta} \sim N(\beta_0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1}\frac{V_0}{n} E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$. In our case we have $V_0 = V(\psi(Z_i, \beta_0)) = E(\varepsilon_i^2X_iX_i')$ and $\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'} = -X_iX_i'$. Thus: \\
+and $\tilde{\beta} \sim N(\beta_0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1}\frac{V_0}{n} E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$. In our case we have $V_0 = V(\psi(Z_i, \beta_0)) = E(\varepsilon_i^2X_iX_i'\exp(-2X_i))$ and $\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'} = -X_iX_i'$. Thus: \\
 $V(\tilde{\beta}) = E(X_iX_i')^{-1}\frac{E(\varepsilon_i^2X_iX_i')}{n}E(X_iX_i')^{-1}$ Since $\varepsilon_i$ and $X_i$ are independent we get $V(\tilde{\beta}) = \frac{E(\varepsilon_i^2)E(X_iX_i')^{-1}}{n} = \frac{\exp(X_i)E(X_iX_i')^{-1}}{n} = \frac{E(\exp(X_i)X_iX_i')^{-1}}{n}$. Replacing population moment with the sample moment yields the given variance estimator: \\
 $\hat{V}(\tilde{\beta}) = \frac{1}{n}\frac{1}{\frac{1}{n} \sum_{i=1}^n\exp(-X_i)X_iX_i'}$. Since $X_i$ is scalar this is $\frac{1}{n}\frac{1}{\frac{1}{n} \sum_{i=1}^n\exp(-X_i)X_i^2}$
 

@@ -35,20 +35,24 @@ rejections_tilde = abs(t_stat_tilde) .> critical_value;
 @ Output @
 
 "----------------------------------------------";
-" 	Mean estimate of beta hat 		" meanc(beta_hat);
-" 	Mean estimate of beta tilde		" meanc(beta_tilde);
+" 	Mean estimate of beta hat 		" meanc(beta_hat);
+" 	Variance of beta hat 					" stdc(beta_hat)^2;
+" 	Average vhat (White) of beta hat	" meanc(var_hat_beta_hat_white);
+" 	Mean estimate of beta tilde		" meanc(beta_tilde);
+" 	Variance of beta tilde 					" stdc(beta_tilde)^2;
+" 	Average vhat (GMM) of beta tilde	" meanc(var_hat_beta_tilde);
 "----------------------------------------------";
 "	White SE				";
 "----------------------------------------------";
 "	Mean SE						" meanc(sqrt(var_hat_beta_hat_white));
 " 	Share of Rjct. of H0	" meanc(rejections_hat);
-" 	RELSE 						" meanc(sqrt(var_hat_beta_hat_white))/stdc(beta_hat);
+" 	RELSE 						" meanc(sqrt(var_hat_beta_hat_white))/stdc(beta_hat); // TODO: should the denominator be different?
 "----------------------------------------------";
 "	GMM SE					";
 "----------------------------------------------";
 "	Mean SE						" meanc(sqrt(var_hat_beta_tilde));
 " 	Share of Rjct. of H0	" meanc(rejections_tilde);
-" 	RELSE 						" meanc(sqrt(var_hat_beta_tilde))/stdc(beta_tilde);
+" 	RELSE 						" meanc(sqrt(var_hat_beta_tilde))/stdc(beta_tilde);  // TODO: should the denominator be different?
 "----------------------------------------------";
 
 proc(2) = gmm_estimator(Y, X);
