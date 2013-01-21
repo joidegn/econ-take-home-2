@@ -22,7 +22,7 @@ for r(1, big_r, 1);
 	Y = beta*X + epsilon;
 	
 	{beta_hat[r], null, var_hat_beta_hat_white[r]} = ols2(Y, X);
-	{beta_tilde[r], null, var_hat_beta_tilde[r]} = gmm_estimator(Y, X);	
+	{beta_tilde[r], var_hat_beta_tilde[r]} = gmm_estimator(Y, X);	
 endfor;
 
 @ t-stats for beta=0.8 @
@@ -51,15 +51,11 @@ rejections_tilde = abs(t_stat_tilde) .> critical_value;
 " 	RELSE 						" meanc(sqrt(var_hat_beta_tilde))/stdc(beta_tilde);
 "----------------------------------------------";
 
-proc(3) = gmm_estimator(Y, X);
-	local beta_tilde, v_hat, _v2, _ghat;
+proc(2) = gmm_estimator(Y, X);
+	local beta_tilde, v_hat_beta_tilde, v2, ghat, e;
 	beta_tilde = (exp(-X).*X)'*Y*inv(exp(-X)'*(X.^2));
-	
-	_ghat = (X .* (Y-X*beta_tilde))'(X .* (Y-X*beta_tilde));
-	_v2 = inv(X'X)*_ghat*inv(X'X);
-	
-	v_hat = 1/(exp(X)'*X.^2);
-	retp(beta_tilde, v_hat, _v2);
+	v_hat_beta_tilde = 1/(exp(-X)'*X.^2);
+	retp(beta_tilde, v_hat_beta_tilde);
 endp;
 
 proc(3) = ols2(_y,_x);
