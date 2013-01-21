@@ -35,7 +35,7 @@ This is an issue because the estimates for the variance of the parameters and th
 \subsection{}
 Let $A(X_i) = X_i\exp(-X_i)$ be the matrix of instruments and let $\rho(Z_i, \beta) = \varepsilon_i = (Y_i - X\beta)$. $\rho(Z_i, \beta)$ is a well defined conditional moment function for $\tilde{\beta}$ since $E(\rho(Z_i, \beta)| X_i) = E(\varepsilon_i | X_i) = 0$. Then $\psi(Z_i, \beta) = A(X_i)'\rho(z_i, \beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$
 \\
-$\psi(Z_i, \beta) = \exp(-X_i)X_i(Y_i - \beta X_i)$ is a moment function that corresponds to $\tilde{\beta}$. $\psi(Z_i, \beta)$ is a well defined moment function because $E(\psi(Z_i, \beta)) = E(\exp(-X_i)X_i\varepsilon_i) = E(\underset{x}{E}(\exp(-X_i)X_i\varepsilon_i|X_i)) = E(\exp(-X_i)X_i\underset{x}{E}(\varepsilon_i|X_i)) = 0$. \\
+$\psi(Z_i, \beta) = \exp(-X_i)X_i(Y_i - \beta X_i)$ is a moment function that corresponds to $\tilde{\beta}$. $\psi(Z_i, \beta)$ is a well defined moment function because $E(\psi(Z_i, \beta)) = E(\exp(-X_i)X_i\varepsilon_i) = \underset{x}{E}(E(\exp(-X_i)X_i\varepsilon_i|X_i)) = \underset{x}{E}(\exp(-X_i)X_iE(\varepsilon_i|X_i)) = 0$. \\
 
 Since we have $q=1$ moment function and $k=1$ parameter, we can simply replace the population moments with the sample moments in order to get a method of moments estimator: \\
 $$E(\psi(Z_i, \beta)) = 0$$
@@ -56,7 +56,7 @@ $V(\tilde{\beta}) = E(-\exp(-X_i)X_i^2)^{-1}\frac{E(\exp(-X_i)X_i^2)}{n}E(-\exp(
 $\hat{V}(\tilde{\beta}) = \frac{1}{n}\frac{1}{\frac{1}{n} \sum_{i=1}^n\exp(-X_i)X_i^2}$.
 
 \subsection{}
-Both estimators are consistent which can be seen either by taking the plim or since the asymptotic distribution of $\tilde{\beta}$ has expectation of $0$. The precision of an estimator is inverse to the variance and the variance of the sandich estimator is generally higher than that of the 
+I expect both estimators to be consistent which can be seen either by taking the plim or since the asymptotic distribution of $\tilde{\beta}$ has expectation of $0$. The precision of an estimator is inverse to the variance. The variance of $\tilde{\beta}$ takes the shape of the epsilon into account.
 
 
 
