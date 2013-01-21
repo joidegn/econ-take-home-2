@@ -1,75 +1,73 @@
 cls;
 library maxlik;
 rndseed 1;
-
-n = 200;
-big_r = 1000;
-beta = 1;
-
-beta_hat = zeros(big_r, 1);
-beta_tilde = zeros(big_r, 1);
-var_hat_beta_tilde = zeros(big_r, 1);
-var_hat_beta_hat_white = zeros(big_r, 1);
-t_stat_tilde = zeros(big_r, 1);
-t_stat_hat = zeros(big_r, 1);
-
-
-for r(1, big_r, 1);
-	
-	@ generate data @
-	X = rndu(n, 1)*5;
-	epsilon = rndn(n,1).*sqrt(exp(X));
-	Y = beta*X + epsilon;
-	
-	{beta_hat[r], null, var_hat_beta_hat_white[r]} = ols2(Y, X);
-	{beta_tilde[r], null, var_hat_beta_tilde[r]} = gmm_estimator(Y, X);	
-endfor;
-
-@ t-stats for beta=0.8 @
-t_stat_hat = (beta_hat - 0.8) ./ (sqrt(var_hat_beta_hat_white));
-t_stat_tilde = (beta_tilde - 0.8) ./ (sqrt(var_hat_beta_tilde));
-critical_value = cdfNi(0.975); // for large n we can take the normal distribution rather than t distribution
-rejections_hat = abs(t_stat_hat) .> critical_value;
-rejections_tilde = abs(t_stat_tilde) .> critical_value;
-
-@ Output @
-
-"----------------------------------------------";
-" 	Mean estimate of beta hat 		" meanc(beta_hat);
-" 	Mean estimate of beta tilde		" meanc(beta_tilde);
-"----------------------------------------------";
-"	White SE				";
-"----------------------------------------------";
-"	Mean SE						" meanc(sqrt(var_hat_beta_hat_white));
-" 	Share of Rjct. of H0	" meanc(rejections_hat);
-" 	RELSE 						" meanc(sqrt(var_hat_beta_hat_white))/stdc(beta_hat);
-"----------------------------------------------";
-"	GMM SE					";
-"----------------------------------------------";
-"	Mean SE						" meanc(sqrt(var_hat_beta_tilde));
-" 	Share of Rjct. of H0	" meanc(rejections_tilde);
-" 	RELSE 						" meanc(sqrt(var_hat_beta_tilde))/stdc(beta_tilde);
-"----------------------------------------------";
-
-proc(3) = gmm_estimator(Y, X);
-	local beta_tilde, v_hat, _v2, _ghat;
-	beta_tilde = (exp(-X).*X)'*Y*inv(exp(-X)'*(X.^2));
-	
-	_ghat = (X .* (Y-X*beta_tilde))'(X .* (Y-X*beta_tilde));
-	_v2 = inv(X'X)*_ghat*inv(X'X);
-	
-	v_hat = 1/(exp(X)'*X.^2);
-	retp(beta_tilde, v_hat, _v2);
-endp;
-
-proc(3) = ols2(_y,_x);
-	local _b,_v1,_e,_ghat,_v2;
-	_b = inv(_x'_x)*_x'_y;
-	_v1 = meanc( (_y-_x*_b).^2 ) * inv(_x'_x);
-	_e = _y - _x*_b;
-	_ghat = (_x .* _e)'(_x .* _e);
-	_v2 = inv(_x'_x)*_ghat*inv(_x'_x);
-	retp(_b,_v1,_v2);
-endp;
-
-
+
+n = 200;
+big_r = 1000;
+beta = 1;
+
+beta_hat = zeros(big_r, 1);
+beta_tilde = zeros(big_r, 1);
+var_hat_beta_tilde = zeros(big_r, 1);
+var_hat_beta_hat_white = zeros(big_r, 1);
+t_stat_tilde = zeros(big_r, 1);
+t_stat_hat = zeros(big_r, 1);
+
+
+for r(1, big_r, 1);
+	
+	@ generate data @
+	X = rndu(n, 1)*5;
+	epsilon = rndn(n,1).*sqrt(exp(X));
+	Y = beta*X + epsilon;
+	
+	{beta_hat[r], null, var_hat_beta_hat_white[r]} = ols2(Y, X);
+	{beta_tilde[r], null, var_hat_beta_tilde[r]} = gmm_estimator(Y, X);	
+endfor;
+
+@ t-stats for beta=0.8 @
+t_stat_hat = (beta_hat - 0.8) ./ (sqrt(var_hat_beta_hat_white));
+t_stat_tilde = (beta_tilde - 0.8) ./ (sqrt(var_hat_beta_tilde));
+critical_value = cdfNi(0.975); // for large n we can take the normal distribution rather than t distribution
+rejections_hat = abs(t_stat_hat) .> critical_value;
+rejections_tilde = abs(t_stat_tilde) .> critical_value;
+
+@ Output @
+
+"----------------------------------------------";
+" 	Mean estimate of beta hat 		" meanc(beta_hat);
+" 	Mean estimate of beta tilde		" meanc(beta_tilde);
+"----------------------------------------------";
+"	White SE				";
+"----------------------------------------------";
+"	Mean SE						" meanc(sqrt(var_hat_beta_hat_white));
+" 	Share of Rjct. of H0	" meanc(rejections_hat);
+" 	RELSE 						" meanc(sqrt(var_hat_beta_hat_white))/stdc(beta_hat);
+"----------------------------------------------";
+"	GMM SE					";
+"----------------------------------------------";
+"	Mean SE						" meanc(sqrt(var_hat_beta_tilde));
+" 	Share of Rjct. of H0	" meanc(rejections_tilde);
+" 	RELSE 						" meanc(sqrt(var_hat_beta_tilde))/stdc(beta_tilde);
+"----------------------------------------------";
+
+proc(3) = gmm_estimator(Y, X);
+	local beta_tilde, v_hat, _v2, _ghat;
+	beta_tilde = (exp(-X).*X)'*Y*inv(exp(-X)'*(X.^2));
+	
+	_ghat = (X .* (Y-X*beta_tilde))'(X .* (Y-X*beta_tilde));
+	_v2 = inv(X'X)*_ghat*inv(X'X);
+	
+	v_hat = 1/(exp(X)'*X.^2);
+	retp(beta_tilde, v_hat, _v2);
+endp;
+
+proc(3) = ols2(_y,_x);
+	local _b,_v1,_e,_ghat,_v2;
+	_b = inv(_x'_x)*_x'_y;
+	_v1 = meanc( (_y-_x*_b).^2 ) * inv(_x'_x);
+	_e = _y - _x*_b;
+	_ghat = (_x .* _e)'(_x .* _e);
+	_v2 = inv(_x'_x)*_ghat*inv(_x'_x);
+	retp(_b,_v1,_v2);
+endp;
