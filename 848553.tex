@@ -56,7 +56,7 @@ $V(\tilde{\beta}) = E(-\exp(-X_i)X_i^2)^{-1}\frac{E(\exp(-X_i)X_i^2)}{n}E(-\exp(
 $\hat{V}(\tilde{\beta}) = \frac{1}{n}\frac{1}{\frac{1}{n} \sum_{i=1}^n\exp(-X_i)X_i^2}$.
 
 \subsection{}
-I expect both estimators to be consistent which can be seen either by taking the plim or since the asymptotic distribution of $\tilde{\beta}$ has expectation of $0$. The precision of an estimator is inverse to the variance. The variance of $\tilde{\beta}$ takes the shape of the epsilon into account.
+I expect both estimators to be consistent which can be seen either by taking the plim or since the asymptotic distribution of $\tilde{\beta}$ has expectation of $0$. The precision of an estimator is inverse to the variance. $\tilde{\beta}$ is equivalent to the efficient GMM-estimator with moment function $\psi(Z_i, \beta) = $ and optimal weighting matrix $W_n = exp(-X_i)$.
 
 
 

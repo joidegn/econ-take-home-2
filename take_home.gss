@@ -1,9 +1,8 @@
 cls;
-library maxlik;
-rndseed 1;
+rndseed 100;
 
-n = 200;
-big_r = 1000;
+n = 1000;
+big_r = 10000;
 beta = 1;
 
 beta_hat = zeros(big_r, 1);
@@ -35,11 +34,11 @@ rejections_tilde = abs(t_stat_tilde) .> critical_value;
 @ Output @
 
 "----------------------------------------------";
-" 	Mean estimate of beta hat 		" meanc(beta_hat);
-" 	Variance of beta hat 					" stdc(beta_hat)^2;
+" 	Mean estimate of beta hat 		" meanc(beta_hat);
+" 	Variance of beta hat 					" stdc(beta_hat)^2;
 " 	Average vhat (White) of beta hat	" meanc(var_hat_beta_hat_white);
-" 	Mean estimate of beta tilde		" meanc(beta_tilde);
-" 	Variance of beta tilde 					" stdc(beta_tilde)^2;
+" 	Mean estimate of beta tilde		" meanc(beta_tilde);
+" 	Variance of beta tilde 					" stdc(beta_tilde)^2;
 " 	Average vhat (MM) of beta tilde	" meanc(var_hat_beta_tilde);
 "----------------------------------------------";
 "	White SE				";
@@ -56,9 +55,9 @@ rejections_tilde = abs(t_stat_tilde) .> critical_value;
 "----------------------------------------------";
 
 proc(2) = mm_estimator(Y, X);
-	local beta_tilde, v_hat_beta_tilde, v2, ghat, e;
+	local beta_tilde, v_hat_beta_tilde;
 	beta_tilde = (exp(-X).*X)'*Y*inv(exp(-X)'*(X.^2));
-	v_hat_beta_tilde = 1/(exp(-X)'*X.^2);
+	v_hat_beta_tilde = 1/(exp(-X)'*X.^2);
 	retp(beta_tilde, v_hat_beta_tilde);
 endp;
 
