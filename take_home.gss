@@ -37,6 +37,7 @@ rejections_tilde = abs(t_stat_tilde) .> critical_value;
 " 	Mean estimate of beta hat 		" meanc(beta_hat);
 " 	Variance of beta hat 					" stdc(beta_hat)^2;
 " 	Average vhat (White) of beta hat	" meanc(var_hat_beta_hat_white);
+"";
 " 	Mean estimate of beta tilde		" meanc(beta_tilde);
 " 	Variance of beta tilde 					" stdc(beta_tilde)^2;
 " 	Average vhat (MM) of beta tilde	" meanc(var_hat_beta_tilde);
@@ -69,7 +70,7 @@ plotSetXLabel(&var_plot_control, "Iteration Nr" );
 plotSetYLabel(&var_plot_control, "Estimated variance" );
 plotxy(seqa(1,1,big_r), var_hat_beta_hat_white~var_hat_beta_tilde);
 size = {30, 18};
-plotSave( "variance_estimators.pdf", size );
+// plotSave( "variance_estimators.jpg", size );
 
 
 proc(2) = mm_estimator(Y, X);
