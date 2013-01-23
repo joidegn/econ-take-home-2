@@ -7,6 +7,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{float}
 
 \newcommand{\RN}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 \renewcommand\thesubsection{\thesection\alph{subsection})}
@@ -27,9 +28,18 @@
 Random Seed for the whole problem: "rndseed 1;"
 
 \subsection{}
-Heteroskedasticity means that the dependent variable of each observation has a potentially different variance depending on the independent variable. I.e. the conditional variance $V(Y|X)$ differs. If we use the model $Y_i = \beta X_i + \varepsilon_i$ the variance of $\varepsilon_i$ carries an index $i$ to denote that it differs among observations. One simple example where this might occur is if $X$ denotes gender (where $Y$ can denote e.g. income) and we observe that the variance among the income of the male observations is different to the variance of the female observations.
+Heteroskedasticity means that the error term of each observation has a potentially different variance depending on i. I.e. the conditional variance $V(e_i|X_i)$ differs among groups of observations or for every observation. If we use the model $Y_i = \beta X_i + \varepsilon_i$ the variance of $\varepsilon_i$ carries an index $i$ to denote that it differs among observations. One simple example where this might occur is if $X_i$ denotes gender and $Y_i$ denotes income. For heteroscedasticity we might observe that the variance among the income of the male observations is different to the variance of the female observations. This might for example happen if there are more men with very high and very low incomes.
 
-This is an issue because the estimates for the variance of the parameters and thus the estimates for the standard errors might be too small compared to robust estimates. As a result hypothesis tests might yield wrong results.
+Heteroscedasticity can be an issue because the estimates for the variance of parameters which do not account for heteroscedasticity can become inconsistent. In the example of OLS, the parameter estimates will still be consistent but hypothesis tests might yield wrong results.
+
+Figure \ref{heteroscedasticity} below shows a random example where $X_i \;{\buildrel d \over \rightarrow}\; U(-1, 1)$, $\varepsilon_i \;{\buildrel d \over \rightarrow}\; N(0, X_i^2)$, $\beta = 1$ and $Y = X_i\beta+\varepsilon_i$
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=100mm]{heteroscedasticity.pdf}
+\caption{Heteroscedasticity}
+\label{heteroscedasticity}
+\end{figure}
 
 
 \subsection{}
@@ -47,7 +57,8 @@ $$\tilde{\beta} = \frac{\sum_{i=1}^n(\exp(-X_i)X_iY_i)}{\sum_{i=1}^n(\exp(-X_i)X
 
 
 \subsection{}
-From proposition 5.2.1 from the lecture notes it follows that $\sqrt{n}(\tilde{\beta}_n-\beta) \;{\buildrel d \over \rightarrow}\; N(0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1})V_0 E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$
+From proposition 5.2.1 from the lecture notes it follows that: \\
+$\sqrt{n}(\tilde{\beta}_n-\beta) \;{\buildrel d \over \rightarrow}\; N(0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1})V_0 E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$ \\
 and $\tilde{\beta} \;{\buildrel d \over \rightarrow}\; N(\beta_0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1}\frac{V_0}{n} E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$. \\
 
 In our case we have $V_0 = V(\psi(Z_i, \beta_0)) = E(\psi(Z_i, \beta)^2) = E(\exp(-2X_i)\varepsilon_i^2X_i^2) = E(\underset{x}{E}(\exp(-2X_i)\varepsilon_i^2X_i^2|X_i)) = E(\exp(-2X_i)X_i^2\underset{x}{E}(\varepsilon_i^2|X_i)) = E(\exp(-X_i)X_i^2)$ and $\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'} = -\exp(-X_i)X_i^2$. \\
@@ -56,7 +67,9 @@ $V(\tilde{\beta}) = E(-\exp(-X_i)X_i^2)^{-1}\frac{E(\exp(-X_i)X_i^2)}{n}E(-\exp(
 $\hat{V}(\tilde{\beta}) = \frac{1}{n}\frac{1}{\frac{1}{n} \sum_{i=1}^n\exp(-X_i)X_i^2}$.
 
 \subsection{}
-I expect both estimators to be consistent which can be seen either by taking the plim or since the asymptotic distribution of $\hat{\beta}$ and $\tilde{\beta}$ have expectation of $0$. Since both estimators are MM estimators, the results from the lecture regarding efficiency should hold. The precision of an estimator is inverse to the variance. $\hat{\beta}$ is the White variance estimator for OLS which we know to be inefficient for a model with heteroscedasticity. $\tilde{\beta}$ is an MM estimator for which we have: $E(\psi(Z_i, \beta)) = 0$. Since we have $\varepsilon_i = Y_i - \beta X_i \;{\buildrel d \over \rightarrow}\; N(0, \exp(X_i))$. The log likelihood function for $\varepsilon$ is $\ln L(Z_i, \beta) = -\frac{n}{2}\ln(2\pi\exp(X_i)) - \displaystyle \sum_{i=1}^n \frac{(Y_i - \beta X_i)^2}{2\exp(X_i)}$ and the score function is $S(\beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$. This is equivalent to the moment function we used earlier. We can thus see the moment estimator derrived earlier as a maximum likelihood estimator which we know to be efficient as it reaches the Cramer-Rao lower bound if the information equality holds.
+I expect both estimators to be consistent which can be seen by taking the plim. Also, since both estimators are MM estimators, the results from the lecture regarding consistency should hold. \\
+The precision of an estimator is inverse to the variance and equivalent to efficiency. $\hat{\beta}$ is the White variance estimator for OLS which we know to be inefficient for a model with heteroscedasticity. $\tilde{\beta}$ is an MM estimator for which we have: $E(\psi(Z_i, \beta)) = 0$. Since we have $\varepsilon_i = Y_i - \beta X_i \;{\buildrel d \over \rightarrow}\; N(0, \exp(X_i))$. The log likelihood function for $\varepsilon_i$ is $\ln L(Z_i, \beta) = -\frac{n}{2}\ln(2\pi\exp(X_i)) - \displaystyle \sum_{i=1}^n \frac{(Y_i - \beta X_i)^2}{2\exp(X_i)}$ and the score function for one observation is $S_i(\beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$. This is equivalent to the moment function we used earlier. We can thus see the moment estimator derrived earlier as a maximum likelihood estimator which we know to be efficient as it reaches the Cramer-Rao lower bound if the information equality holds. \\
+More intuitively we can see that $\tilde{\beta}$ is the weighted least squares estimator with weight matrix as the inverse of the variance of $\varepsilon_i$. Since this corrects for the heteroscedastic variance while $\hat{\beta}$ does not, I expect $\tilde{\beta}$ to be more efficient.
 
 \subsection{}
 See Gauss code
