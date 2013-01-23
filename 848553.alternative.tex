@@ -33,7 +33,7 @@ This is an issue because the estimates for the variance of the parameters and th
 
 
 \subsection{}
-Let $A(X_i) = X_i\exp(-X_i)$ be the matrix of instruments and let $\rho(Z_i, \beta) = \varepsilon_i = (Y_i - X\beta)$. $\rho(Z_i, \beta)$ is a well defined conditional moment function for $\tilde{\beta}$ since $E(\rho(Z_i, \beta)| X_i) = E(\varepsilon_i | X_i) = 0$. Then $\psi(Z_i, \beta) = A(X_i)'\rho(z_i, \beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$
+Let $W_n = \exp(-X_i)$ be the matrix of instruments (this corresponds to the matrix instruments for efficient GMM estimation where )and let $\psi(Z_i, \beta) = X_i(Y_i-X_i\beta)$. $\rho(Z_i, \beta)$ is a well defined conditional moment function for $\tilde{\beta}$ since $E(\rho(Z_i, \beta)| X_i) = E(\varepsilon_i | X_i) = 0$. Then $\psi(Z_i, \beta) = A(X_i)'\rho(z_i, \beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$
 \\
 $\psi(Z_i, \beta) = \exp(-X_i)X_i(Y_i - \beta X_i)$ is a moment function that corresponds to $\tilde{\beta}$. $\psi(Z_i, \beta)$ is a well defined moment function because $E(\psi(Z_i, \beta)) = E(\exp(-X_i)X_i\varepsilon_i) = \underset{x}{E}(E(\exp(-X_i)X_i\varepsilon_i|X_i)) = \underset{x}{E}(\exp(-X_i)X_iE(\varepsilon_i|X_i)) = 0$. \\
 
@@ -47,8 +47,8 @@ $$\tilde{\beta} = \frac{\sum_{i=1}^n(\exp(-X_i)X_iY_i)}{\sum_{i=1}^n(\exp(-X_i)X
 
 
 \subsection{}
-From proposition 5.2.1 from the lecture notes it follows that $\sqrt{n}(\tilde{\beta}_n-\beta) \;{\buildrel d \over \rightarrow}\; N(0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1})V_0 E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$
-and $\tilde{\beta} \;{\buildrel d \over \rightarrow}\; N(\beta_0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1}\frac{V_0}{n} E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$. \\
+From proposition 5.2.1 from the lecture notes it follows that $\sqrt{n}(\tilde{\beta}_n-\beta) \sim N(0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1})V_0 E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$
+and $\tilde{\beta} \sim N(\beta_0, E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'})^{-1}\frac{V_0}{n} E(\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta})^{-1})$. \\
 
 In our case we have $V_0 = V(\psi(Z_i, \beta_0)) = E(\psi(Z_i, \beta)^2) = E(\exp(-2X_i)\varepsilon_i^2X_i^2) = E(\underset{x}{E}(\exp(-2X_i)\varepsilon_i^2X_i^2|X_i)) = E(\exp(-2X_i)X_i^2\underset{x}{E}(\varepsilon_i^2|X_i)) = E(\exp(-X_i)X_i^2)$ and $\frac{\partial \psi(Z_i, \beta_0)}{\partial \beta'} = -\exp(-X_i)X_i^2$. \\
 Thus: \\
@@ -56,7 +56,7 @@ $V(\tilde{\beta}) = E(-\exp(-X_i)X_i^2)^{-1}\frac{E(\exp(-X_i)X_i^2)}{n}E(-\exp(
 $\hat{V}(\tilde{\beta}) = \frac{1}{n}\frac{1}{\frac{1}{n} \sum_{i=1}^n\exp(-X_i)X_i^2}$.
 
 \subsection{}
-I expect both estimators to be consistent which can be seen either by taking the plim or since the asymptotic distribution of $\hat{\beta}$ and $\tilde{\beta}$ have expectation of $0$. The precision of an estimator is inverse to the variance. $\hat{\beta}$ is the OLS estimator which is inefficient for for a model with heteroscedasticity. $\tilde{\beta}$ is an MM estimator for which we have: $E(\psi(Z_i, \beta)) = 0$. Since we have $\varepsilon_i = Y_i - \beta X_i \;{\buildrel d \over \rightarrow}\; N(0, \exp(X_i))$. The log likelihood function for $\varepsilon$ is $\ln L(Z_i, \beta) = -\frac{n}{2}\ln(2\pi\sigma^2) - \frac{(Y_i - \beta X_i)^2}{2\exp(X_i)}$ and the score function is $S(\beta) = \exp(-X_i)X_i(Y_i-\beta X_i)$. This is equivalent to the moment function we used earlier. We can thus see the moment estimator derrived earlier as a maximum likelihood estimator which we know to be efficient as it reaches the Cramer-Rao lower bound if the information equality holds.
+I expect both estimators to be consistent which can be seen either by taking the plim or since the asymptotic distribution of $\tilde{\beta}$ has expectation of $0$. The precision of an estimator is inverse to the variance. The variance of $\tilde{\beta}$ takes the shape of the epsilon into account.
 
 
 

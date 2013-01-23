@@ -53,11 +53,29 @@ rejections_tilde = abs(t_stat_tilde) .> critical_value;
 " 	Share of Rjct. of H0	" meanc(rejections_tilde);
 " 	RELSE 						" meanc(sqrt(var_hat_beta_tilde))/stdc(beta_tilde);  // TODO: should the denominator be different?
 "----------------------------------------------";
+
+
+
+@ Plot the variance of the estimators @
+
+struct plotControl var_plot_control;
+// Initialize plotControl structure
+var_plot_control = plotGetDefaults("xy");
+// Set the title, title font and title font size 
+plotSetTitle( &var_plot_control, "Estimators for the variance", "verdana", 10 );
+legend = "OLS White estimator" $| "efficient MM estimator";
+plotSetLegend(&var_plot_control, legend);
+plotSetXLabel(&var_plot_control, "Iteration Nr" );
+plotSetYLabel(&var_plot_control, "Estimated variance" );
+plotxy(seqa(1,1,big_r), var_hat_beta_hat_white~var_hat_beta_tilde);
+size = {30, 18};
+plotSave( "variance_estimators.pdf", size );
+
 
 proc(2) = mm_estimator(Y, X);
 	local beta_tilde, v_hat_beta_tilde;
 	beta_tilde = (exp(-X).*X)'*Y*inv(exp(-X)'*(X.^2));
-	v_hat_beta_tilde = 1/(exp(-X)'*X.^2);
+	v_hat_beta_tilde = 1/(exp(-X)'*X.^2);
 	retp(beta_tilde, v_hat_beta_tilde);
 endp;
 
