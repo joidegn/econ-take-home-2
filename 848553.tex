@@ -76,13 +76,15 @@ See Gauss code
 
 \subsection{}
 For the simulation: see Gauss code. \\
-\begin{figure}[H]
-\centering
-\includegraphics[height=100mm]{variance_estimators.pdf}
-\caption{estimated variances}
-\end{figure}
 From the results we see that that both $\hat{\beta}$ and $\tilde{\beta}$ are consistent and approach 1 (the true $\beta$) for large $R$ and $n$. As proposed, the values of $\hat{V}(\tilde{\beta})$ are smaller than the average $\hat{V}(\hat{\beta}))$. From the plot we can see that this holds generally and not only on average. \\
 The lower variance estimates for $\hat{V}(\tilde{\beta})$ result in higher t-statistics which lead to higher rejection rates in the test with $H_0:\beta=0.8$
 
+\begin{figure}[H]
+\centering
+\includegraphics[height=100mm]{variance_estimators.pdf}
+\caption[caption]{estimated variances with\footnotemark Group 1: $\hat{\beta}$, Group 2: $\tilde{\beta}$}
+\end{figure}
+
+\footnotetext{Apparently running GAUSS in WINE on linux is not a good idea if one wants to use plotting. However, installing the linux light version (and writing several emails with aptech) does not result in a working environment either. There are rumours floating around about licenses given to students by the faculty which might solve my problem but what would really make me happy is using a proper programming language like e.g. R.}
 
 \end{document}
