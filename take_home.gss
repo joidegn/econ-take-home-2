@@ -63,14 +63,14 @@ struct plotControl var_plot_control;
 // Initialize plotControl structure
 var_plot_control = plotGetDefaults("xy");
 // Set the title, title font and title font size 
-plotSetTitle( &var_plot_control, "Estimators for the variance", "verdana", 10 );
-legend = "OLS White estimator" $| "efficient MM estimator";
+plotSetTitle( &var_plot_control, "Estimators for the variances", "verdana", 10 );
+legend = "beta_hat" $| "beta_tilde";
 plotSetLegend(&var_plot_control, legend);
 plotSetXLabel(&var_plot_control, "Iteration Nr" );
 plotSetYLabel(&var_plot_control, "Estimated variance" );
-plotxy(seqa(1,1,big_r), var_hat_beta_hat_white~var_hat_beta_tilde);
+plotxy(var_plot_control, seqa(1,1,big_r), var_hat_beta_hat_white~var_hat_beta_tilde);
 size = {30, 18};
-//plotSave( "variance_estimators.pdf", size );
+plotSave( "variance_estimators.pdf", size );
 
 
 proc(2) = mm_estimator(Y, X);
